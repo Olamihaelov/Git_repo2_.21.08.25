@@ -58,7 +58,9 @@ INSERT INTO movies (movie_name, genre, country, language, year, revenue)
 VALUES (?, ?, ?, ?, ?, ?);
 ''', data)
 
-                                        # display all movies
+
+
+                                        # 1 display all movies
 cursor.execute("SELECT * FROM movies")
 movies = cursor.fetchall()
 for movie in movies:
@@ -68,7 +70,9 @@ for movie in movies:
 
 conn.commit()
 
-                                        # Movie search
+
+
+                                        # 2 Movie search
 def search_movies():
     search_term = input("\nEnter a movie name or part of a movie name: ").strip()
 
@@ -94,8 +98,11 @@ def search_movies():
 
 search_movies()
 
+
+
+                                        # 3 Add New Movie
 def add_movie():
-    print("\n=== Add New Movie ===")
+    print("\n*** Add New Movie ***")
 
     try:
         movie_name = input("Enter movie name: ").strip()
@@ -118,9 +125,9 @@ def add_movie():
             print("Language cannot be empty.")
             return
 
-        year = int(input("Enter year (1990 or later): "))
-        if year < 1990:
-            print("Year must be 1990 or later.")
+        year = int(input("Enter year (1992 or later): "))
+        if year < 1992:
+            print("Year must be 1992 or later.")
             return
 
         revenue = float(input("Enter revenue in millions: "))
