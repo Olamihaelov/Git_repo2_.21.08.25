@@ -100,7 +100,7 @@ search_movies()
                                         # 3 Add New Movie
 
 def add_movie():
-    print("\n=== Add New Movie ===")
+    print("\n*** Add New Movie ***")
 
     try:
         movie_name = input("Enter movie name: ")
