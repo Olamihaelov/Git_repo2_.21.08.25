@@ -58,7 +58,7 @@ INSERT INTO movies (movie_name, genre, country, language, year, revenue)
 VALUES (?, ?, ?, ?, ?, ?);
 ''', data)
 
-
+                                        # display all movies
 cursor.execute("SELECT * FROM movies")
 movies = cursor.fetchall()
 for movie in movies:
@@ -67,4 +67,85 @@ for movie in movies:
           f"Year: {movie['year']}, Revenue: ${movie['revenue']}M")
 
 conn.commit()
-conn.close()
+
+                                        # Movie search
+def search_movies():
+    search_term = input("\nEnter a movie name or part of a movie name: ").strip()
+
+    if not search_term:
+        print("Please enter a valid search term.")
+        return
+
+    cursor.execute("SELECT * FROM movies WHERE movie_name LIKE ? ORDER BY movie_name",
+                   (f"%{search_term}%",))
+    matching_movies = cursor.fetchall()
+
+    if matching_movies:
+        print(f"\nFound {len(matching_movies)} movie(s) matching '{search_term}':")
+
+        for movie in matching_movies:
+            print(f"ID: {movie['id']}, Name: {movie['movie_name']}, Genre: {movie['genre']}, "
+                  f"Country: {movie['country']}, Language: {movie['language']}, "
+                  f"Year: {movie['year']}, Revenue: ${movie['revenue']}M")
+    else:
+        print(f"no movies found'{search_term}'.")
+
+    conn.close()
+
+search_movies()
+
+def add_movie():
+    print("\n=== Add New Movie ===")
+
+    try:
+        movie_name = input("Enter movie name: ").strip()
+        if not movie_name:
+            print("Movie name cannot be empty.")
+            return
+
+        genre = input("Enter genre: ").strip()
+        if not genre:
+            print("Genre cannot be empty.")
+            return
+
+        country = input("Enter country: ").strip()
+        if not country:
+            print("Country cannot be empty.")
+            return
+
+        language = input("Enter language: ").strip()
+        if not language:
+            print("Language cannot be empty.")
+            return
+
+        year = int(input("Enter year (1990 or later): "))
+        if year < 1990:
+            print("Year must be 1990 or later.")
+            return
+
+        revenue = float(input("Enter revenue in millions: "))
+        if revenue < 0:
+            print("Revenue cannot be negative.")
+            return
+
+        conn_insert = sqlite3.connect('movies.db')
+        cursor_insert = conn_insert.cursor()
+
+        cursor_insert.execute('''
+        INSERT INTO movies (movie_name, genre, country, language, year, revenue)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ''', (movie_name, genre, country, language, year, revenue))
+
+        conn_insert.commit()
+        conn_insert.close()
+
+        print(f"Movie '{movie_name}' added successfully!")
+
+    except ValueError:
+        print("Invalid input. Please enter numbers for year and revenue.")
+    except sqlite3.IntegrityError:
+        print("Error: A movie with this name already exists.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+add_movie()
