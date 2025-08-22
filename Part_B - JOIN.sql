@@ -123,5 +123,3 @@ JOIN
     countries c ON t.country_id = c.id
 ORDER BY
     tr.id, t.id;
-
-  9
