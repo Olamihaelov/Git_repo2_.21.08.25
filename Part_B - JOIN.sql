@@ -57,3 +57,8 @@ FROM tours AS tr
 LEFT JOIN tourists AS t ON t.tour_id = tr.id
 WHERE t.id IS NULL;
 
+  5
+SELECT t.first_name, t.last_name
+FROM tourists t
+LEFT JOIN tours tr ON tr.id = t.tour_id
+WHERE t.tour_id IS NULL;
