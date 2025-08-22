@@ -38,6 +38,24 @@ ORDER BY movie_count DESC
 limit 1;
 
   7
+SELECT genre, COUNT(*) AS total_movies
+FROM movies
+GROUP BY genre
+HAVING COUNT(*) > 2
+ORDER BY total_movies asc;
 
+  8
+SELECT year, sum(revenue) AS total_revenue
+FROM movies
+GROUP BY year
+HAVING total_revenue > 1000
+ORDER BY year;
+
+  9
+SELECT language, COUNT(*) AS total_movies
+FROM movies
+GROUP BY language
+HAVING total_movies >= 3
+ORDER BY total_movies DESC;
 
 
